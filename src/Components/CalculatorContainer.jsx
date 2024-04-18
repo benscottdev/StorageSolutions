@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import Result from "./Result";
+import UserItem from "./UserItem";
+import Form from "./Form";
 
 function CalculatorContainer() {
   const [data, setData] = useState([]);
@@ -25,61 +28,31 @@ function CalculatorContainer() {
     setData([...data, newItem]);
   };
 
-  // Remove Input
+  // Remove user input
   const removeItem = (id) => {
     setData(data.filter((data) => data.id !== id));
   };
 
+  const resetForm = () => {
+    setData([]);
+  };
+
   return (
-    <div>
-      <form>
-        <input
-          type="text"
-          placeholder="Item"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Weight (kg)"
-          onChange={(e) => setWeight(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Height (cm)"
-          onChange={(e) => setHeight(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Width (cm)"
-          onChange={(e) => setWidth(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Length (cm)"
-          onChange={(e) => setLength(e.target.value)}
+    <div className="container">
+      <div className="calculatorContainer">
+        <Form
+          setName={setName}
+          setWeight={setWeight}
+          setHeight={setHeight}
+          setWidth={setWidth}
+          setLength={setLength}
+          createItem={createItem}
+          resetForm={resetForm}
         />
 
-        <button onClick={createItem}>Create Item</button>
-      </form>
-      {data.map((item, index) => {
-        return (
-          <div className="newItem" key={item.id}>
-            <h1>{item.name}</h1>
-            <h1>{item.weight}kg</h1>
-            <h1>{item.height}cm</h1>
-            <h1>{item.length}cm</h1>
-            <h1>{item.width}cm</h1>
-
-            <button
-              onClick={() => {
-                removeItem(item.id);
-              }}
-            >
-              X
-            </button>
-          </div>
-        );
-      })}
+        <UserItem data={data} removeItem={removeItem} />
+      </div>
+      <Result data={data} />
     </div>
   );
 }

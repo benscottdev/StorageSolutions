@@ -1,13 +1,26 @@
-function UserItem() {
+function UserItem({ data, removeItem }) {
   return (
     <div className="userItem">
-      <form>
-        <input type="text" name="name" placeholder="Name" />
-        <input type="number" name="weight" placeholder="Weight" />
-        <input type="number" name="height" placeholder="Height" />
-        <input type="number" name="width" placeholder="Width" />
-        <input type="number" name="length" placeholder="Length" />
-      </form>
+      {data.map((item, index) => {
+        return (
+          <div className="newItem" key={item.id}>
+            <p>{item.name}</p>
+            <p>|</p>
+            <p>{item.weight}kg</p>
+            <p>{item.height}cm</p>
+            <p>{item.length}cm</p>
+            <p>{item.width}cm</p>
+
+            <button
+              onClick={() => {
+                removeItem(item.id);
+              }}
+            >
+              X
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
