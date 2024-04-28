@@ -2,11 +2,40 @@ import { useState, useEffect } from "react";
 
 function Result({ data }) {
   const [totalArea, setTotalArea] = useState(0);
+  const [storageSize, setStorageSize] = useState(null);
+  const [storageCost, setStorageCost] = useState(0.0);
 
+  // Surface area calculation function
   const calculateSurfaceArea = (length, width, height) => {
-    return 2 * (length * width + length * height + width * height);
+    return (2 * (length * width + length * height + width * height)) / 10000;
   };
 
+  // Container size decider function
+  const calculateStorageContainerSize = (totalArea) => {
+    if (totalArea === 0) {
+      setStorageSize("Please Input...");
+    } else if (totalArea <= 3) {
+      setStorageSize("Mini");
+      setStorageCost(300);
+    } else if (totalArea <= 6) {
+      setStorageSize("Small");
+      setStorageCost(500);
+    } else if (totalArea <= 9) {
+      setStorageSize("Medium");
+      setStorageCost(800);
+    } else if (totalArea <= 12) {
+      setStorageSize("Large");
+      setStorageCost(1000);
+    } else if (totalArea <= 15) {
+      setStorageSize("X-Large");
+      setStorageCost(1200);
+    } else if (totalArea >= 20) {
+      setStorageSize("Jumbo");
+      setStorageCost(1500);
+    }
+  };
+
+  // Calculation for totalArea runs when data is updated
   useEffect(() => {
     const calculateTotalArea = data.reduce((total, item) => {
       const surfaceArea = calculateSurfaceArea(
@@ -16,27 +45,22 @@ function Result({ data }) {
       );
       return total + surfaceArea;
     }, 0);
-
     setTotalArea(calculateTotalArea);
+    calculateStorageContainerSize(calculateTotalArea);
   }, [data]);
-
-  // Use switch to decide on what size container required
-  // Price will be impacted dependant on size
-  const calculateStorageContainerSize = () => {
-    null;
-  };
-
-  // Calculate cost per year @ $100 per m2/year
-  const calculateCostPerYear = () => {
-    null;
-  };
 
   return (
     <div className="result">
       {/* totalArea stores the cm2 of total surface area */}
-      <p>Total Area (cm2): {totalArea}</p>
-      <p>Storage Unit Suggestion Size: INPUTHERE</p>
-      <p>Total Cost Per Year (AUD): $INPUTHERE</p>
+      <p>
+        Total Area (m²): <b>{totalArea.toFixed(2)}</b>
+      </p>
+      <p>
+        Storage Unit Suggestion Size: <b>{storageSize}</b>
+      </p>
+      <p>
+        Total Cost Per Year (AUD): <b>${storageCost.toFixed(2)}</b>
+      </p>
     </div>
   );
 }

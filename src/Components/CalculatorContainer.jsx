@@ -16,7 +16,6 @@ function CalculatorContainer() {
 
   // New item creation function
   const createItem = (e) => {
-    e.preventDefault();
     let newItem = {
       id: uuidv4(),
       name: name,
@@ -33,6 +32,7 @@ function CalculatorContainer() {
     setData(data.filter((data) => data.id !== id));
   };
 
+  // Reset whole form
   const resetForm = () => {
     setData([]);
   };
